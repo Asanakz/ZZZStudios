@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZZZ Studios | High-End Recording & Production in Köln-Mülheim</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #060608;
+            --bg-alt: #0b0c10;
+            --surface: rgba(15, 17, 23, 0.65);
+            --surface-hover: rgba(24, 28, 38, 0.85);
+            --accent: #d97706;
+            --accent-bright: #fbbf24;
+            --accent-gold: #f59e0b;
+            --accent-glow: rgba(217, 119, 6, 0.45);
+            --whatsapp-green: #25D366;
+            --text-main: #f8fafc;
+            --text-sub: #cbd5e1;
+            --text-muted: #64748b;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(217, 119, 6, 0.45);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #ambientCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: min(92%, 1200px);
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(20px, 5vw, 60px);
+            background: rgba(6, 6, 8, 0.82);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-decoration: none;
+            position: relative;
+            z-index: 3001;
+        }
+
+        .brand-logo-img {
+            height: 76px;
+            width: auto;
+            max-width: 260px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 18px rgba(217, 119, 6, 0.45));
+            transition: var(--transition);
+        }
+
+        .brand-logo-img:hover {
+            transform: scale(1.03);
+            filter: drop-shadow(0 0 26px rgba(251, 191, 36, 0.65));
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-text h1 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
+        .brand-text p {
+            font-size: 0.72rem;
+            color: var(--accent-bright);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-top: 4px;
+        }
+
+        .header-right-cluster {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            position: relative;
+            z-index: 3001;
+        }
+
+        .header-contact-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+
+        .header-contact-meta a {
+            color: var(--text-sub);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .header-contact-meta a:hover {
+            color: var(--accent-bright);
+        }
+
+        /* WhatsApp Icon Styling */
+        .wa-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-sub);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .wa-link:hover {
+            color: var(--whatsapp-green) !important;
+        }
+
+        .wa-icon {
+            width: 18px;
+            height: 18px;
+            fill: var(--whatsapp-green);
+            vertical-align: middle;
+            transition: var(--transition);
+        }
+
+        .wa-link:hover .wa-icon {
+            transform: scale(1.1);
+        }
+
+        .burger-toggle {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 52px;
+            height: 52px;
+            padding: 15px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .burger-toggle:hover {
+            background: rgba(217, 119, 6, 0.22);
+            border-color: var(--accent-bright);
+            transform: scale(1.05);
+        }
+
+        .burger-line {
+            display: block;
+            width: 100%;
+            height: 2.5px;
+            background-color: var(--text-main);
+            border-radius: 2px;
+            transition: var(--transition);
+            transform-origin: center;
+        }
+
+        .burger-toggle.active .burger-line:nth-child(1) {
+            transform: translateY(9.5px) rotate(45deg);
+            background-color: var(--accent-bright);
+        }
+
+        .burger-toggle.active .burger-line:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .burger-toggle.active .burger-line:nth-child(3) {
+            transform: translateY(-9.5px) rotate(-45deg);
+            background-color: var(--accent-bright);
+        }
+
+        .fullscreen-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 6, 8, 0.95);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            z-index: 2500;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fullscreen-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .overlay-nav-list {
+            list-style: none;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 26px;
+        }
+
+        .overlay-nav-list a {
+            text-decoration: none;
+            font-size: clamp(1.8rem, 4vw, 3.2rem);
+            font-weight: 800;
+            color: var(--text-sub);
+            transition: var(--transition);
+            display: inline-block;
+            position: relative;
+        }
+
+        .overlay-nav-list a:hover {
+            color: var(--accent-bright);
+            transform: translateY(-3px) scale(1.03);
+        }
+
+        .overlay-nav-list a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-bright);
+            transition: var(--transition);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .overlay-nav-list a:hover::after {
+            width: 80%;
+        }
+
+        .overlay-cta-btn {
+            margin-top: 15px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-bright) 100%);
+            color: #060608 !important;
+            border-radius: var(--radius-sm);
+            font-size: 1.15rem !important;
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        .overlay-cta-btn::after {
+            display: none !important;
+        }
+
+        .overlay-footer-note {
+            margin-top: 55px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hero {
+            padding: 210px 0 110px;
+            position: relative;
+            min-height: 94vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-glow-spotlight {
+            position: absolute;
+            top: -120px;
+            left: -150px;
+            width: 750px;
+            height: 750px;
+            background: radial-gradient(
+                circle,
+                rgba(251, 191, 36, 0.48) 0%,
+                rgba(217, 119, 6, 0.32) 35%,
+                rgba(245, 158, 11, 0.12) 60%,
+                rgba(6, 6, 8, 0) 80%
+            );
+            filter: blur(55px);
+            pointer-events: none;
+            z-index: 1;
+            mix-blend-mode: screen;
+            animation: topGlowPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes topGlowPulse {
+            0% {
+                opacity: 0.85;
+                transform: scale(1) translate(0, 0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.12) translate(30px, 20px);
+            }
+        }
+
+        .hero-media-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 85%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,1) 60%);
+            -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,1) 60%);
+        }
+
+        .hero-bg-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0.7;
+            filter: contrast(1.08) brightness(0.95);
+        }
+
+        .hero-content {
+            max-width: 680px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 18px;
+            background: rgba(217, 119, 6, 0.18);
+            border: 1px solid var(--border-accent);
+            border-radius: 99px;
+            color: var(--accent-bright);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 26px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(217, 119, 6, 0.25);
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent-bright);
+            box-shadow: 0 0 12px var(--accent-bright);
+        }
+
+        .hero-content h2 {
+            font-size: clamp(2.9rem, 5.8vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.02;
+            letter-spacing: -0.03em;
+            margin-bottom: 26px;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-content h2 span {
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent-bright) 40%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 25px rgba(251, 191, 36, 0.4));
+        }
+
+        .hero-content p {
+            font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+            color: var(--text-sub);
+            margin-bottom: 40px;
+            line-height: 1.75;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 54px;
+        }
+
+        .btn-primary {
+            padding: 16px 36px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-bright) 100%);
+            color: #060608;
+            font-weight: 800;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 10px 32px var(--accent-glow);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px rgba(217, 119, 6, 0.58);
+        }
+
+        .btn-secondary {
+            padding: 16px 34px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(12px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--border-accent);
+            transform: translateY(-3px);
+        }
+
+        .hero-highlights {
+            display: flex;
+            gap: 36px;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--border);
+            padding-top: 28px;
+        }
+
+        .highlight-item strong {
+            display: block;
+            font-size: 1.18rem;
+            color: var(--text-main);
+        }
+
+        .highlight-item span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-padding {
+            padding: 110px 0;
+            position: relative;
+        }
+
+        .section-head {
+            margin-bottom: 54px;
+        }
+
+        .section-head span {
+            color: var(--accent-bright);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .section-head h3 {
+            font-size: clamp(2.2rem, 3.6vw, 3.3rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .gear-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-bottom: 50px;
+        }
+
+        .gear-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 36px;
+            transition: var(--transition);
+            backdrop-filter: blur(12px);
+        }
+
+        .gear-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+        }
+
+        .gear-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--accent-bright);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .gear-card h4 {
+            font-size: 1.35rem;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .gear-card p {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .booth-media-card {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--bg-alt);
+        }
+
+        .booth-image-wrap {
+            position: relative;
+            width: 100%;
+            height: 440px;
+        }
+
+        .booth-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            mask-image: linear-gradient(180deg, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+            -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+        }
+
+        .booth-card-details {
+            padding: 36px;
+            margin-top: -50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .booth-card-details strong {
+            display: block;
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .booth-card-details p {
+            color: var(--text-sub);
+            font-size: 1rem;
+        }
+
+        .story-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .story-text-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            backdrop-filter: blur(12px);
+        }
+
+        .story-text-box p {
+            color: var(--text-sub);
+            font-size: 1.08rem;
+            margin-bottom: 22px;
+            line-height: 1.8;
+        }
+
+        .story-text-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact-box {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 52px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 58px;
+            backdrop-filter: blur(12px);
+        }
+
+        .contact-info h3 {
+            font-size: 2.3rem;
+            margin-bottom: 18px;
+            letter-spacing: -0.02em;
+        }
+
+        .contact-info p {
+            color: var(--text-sub);
+            margin-bottom: 34px;
+            font-size: 1.05rem;
+        }
+
+        .contact-details-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .contact-details-list li {
+            color: var(--text-sub);
+            font-size: 0.98rem;
+        }
+
+        .contact-details-list strong {
+            color: var(--text-main);
+            display: inline-block;
+            width: 95px;
+        }
+
+        .contact-details-list a {
+            color: var(--accent-bright);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-bright);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-group textarea {
+            min-height: 125px;
+            resize: vertical;
+        }
+
+        button[type="submit"] {
+            padding: 18px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-bright) 100%);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: #060608;
+            font-weight: 800;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px var(--accent-glow);
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 45px 0;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            background: #030304;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 22px;
+        }
+
+        .footer-flex a {
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .footer-flex a:hover {
+            color: var(--accent-bright);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 18px 30px;
+            background: #0f1117;
+            border: 1px solid var(--accent-bright);
+            color: var(--text-main);
+            border-radius: var(--radius-sm);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.85);
+            display: none;
+            z-index: 3000;
+            animation: slideIn 0.35s forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 992px) {
+            .hero-media-wrapper {
+                width: 100%;
+                opacity: 0.45;
+                mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 20%, rgba(0,0,0,0.9) 70%);
+                -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 20%, rgba(0,0,0,0.9) 70%);
+            }
+
+            .header-contact-meta {
+                display: none;
+            }
+
+            .contact-box {
+                grid-template-columns: 1fr;
+                padding: 36px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .brand-logo-img {
+                height: 62px;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+            }
+
+            .hero-glow-spotlight {
+                width: 450px;
+                height: 450px;
+                top: -80px;
+                left: -100px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Ambient Canvas Orbs -->
+    <canvas id="ambientCanvas"></canvas>
+
+    <header>
+        <a href="#" class="brand">
+            <img src="logo.png" alt="ZZZ Studios Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='https://placehold.co/260x76/0f1117/fbbf24?text=ZZZ+STUDIOS';">
+            <div class="brand-text">
+                <h1>ZZZ STUDIOS</h1>
+                <p>Köln-Mülheim</p>
+            </div>
+        </a>
+
+        <div class="header-right-cluster">
+            <div class="header-contact-meta">
+                <a href="mailto:info@zzzstudios.de">info@zzzstudios.de</a>
+                <span>|</span>
+                <a href="https://wa.me/4917666815058" target="_blank" class="wa-link">
+                    <svg class="wa-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    +49 176 66815058
+                </a>
+            </div>
+
+            <button class="burger-toggle" id="burgerToggle" aria-label="Menü öffnen">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Fullscreen Glassmorphism Navigation Menu Overlay -->
+    <div class="fullscreen-menu-overlay" id="fullscreenOverlay">
+        <ul class="overlay-nav-list">
+            <li><a href="recording.html" class="overlay-link">Recording</a></li>
+            <li><a href="mixing.html" class="overlay-link">Mixing & Audio</a></li>
+            <li><a href="workshops.html" class="overlay-link">Workshops & Coaching</a></li>
+            <li><a href="creator.html" class="overlay-link">Creator Pässe</a></li>
+            <li><a href="#kontakt" class="overlay-link overlay-cta-btn">Direkt Buchen</a></li>
+        </ul>
+        <div class="overlay-footer-note">ZZZ Studios • Schäl Sick • Köln-Mülheim</div>
+    </div>
+
+    <div class="container">
+
+        <section class="hero">
+            <div class="hero-glow-spotlight"></div>
+
+            <div class="hero-media-wrapper">
+                <video autoplay loop muted playsinline class="hero-bg-video">
+                    <source src="studio-video-1.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="hero-content">
+                <div class="badge">
+                    <span class="badge-dot"></span> 100% Independent • Köln-Mülheim
+                </div>
+                <h2>DEINE VISION.<br><span>DEIN SOUND.</span></h2>
+                <p>Professionelle Vocal-Recordings und Audio-Production im Herzen von Köln-Mülheim (Schäl Sick). Hochwertiges Equipment von Universal Audio und Lewitt, kompromisslose Raumakustik und ein zielgerichtetes Setup für Artists, die wissen, was sie wollen.</p>
+                
+                <div class="hero-btns">
+                    <a href="#kontakt" class="btn-primary">Session anfragen</a>
+                    <a href="#ausstattung" class="btn-secondary">Equipment entdecken</a>
+                </div>
+
+                <div class="hero-highlights">
+                    <div class="highlight-item">
+                        <strong>Standort: Köln-Mülheim</strong>
+                        <span>Standort</span>
+                    </div>
+                    <div class="highlight-item">
+                        <strong>12+ Jahre Erfahrung</strong>
+                        <span>Praxis & Know-how in Musik und Tontechnik</span>
+                    </div>
+                    <div class="highlight-item">
+                        <strong>UAD DSP Processing</strong>
+                        <span>Technik-Standard</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ausstattung" class="section-padding">
+            <div class="section-head">
+                <span>Hardware & Environment</span>
+                <h3>Equipment & Sound-Standard</h3>
+            </div>
+
+            <div class="gear-grid">
+                <div class="gear-card">
+                    <span class="gear-badge">Interface</span>
+                    <h4>Universal Audio Apollo Twin X</h4>
+                    <p>Echtzeit-UAD-Processing für latenzfreies Monitoring, exzellente Vorverstärker und erstklassige Analog-Emulationen direkt beim Tracking.</p>
+                </div>
+
+                <div class="gear-card">
+                    <span class="gear-badge">Mikrofon</span>
+                    <h4>Lewitt LCT 240 Pro</h4>
+                    <p>Präzise Kondensatorkapsel, die Vocals transparent, durchsetzungsfähig und mit ausgeglichenem Frequenzgang abbildet.</p>
+                </div>
+
+                <div class="gear-card">
+                    <span class="gear-badge">Kabine</span>
+                    <h4>Akustisch optimierter Raum</h4>
+                    <p>Eine professionell entkoppelte Raum-in-Raum-Umgebung eliminiert störenden Raumhall und liefert trockene, saubere Takes für den perfekten Mix.</p>
+                </div>
+            </div>
+
+            <div class="booth-media-card">
+                <div class="booth-image-wrap">
+                    <img src="booth.jpg" alt="ZZZ Studios Booth" class="booth-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1000&auto=format&fit=crop';">
+                </div>
+                <div class="booth-card-details">
+                    <strong>Trockener Raum. Maximale Klarheit.</strong>
+                    <p>Perfekt abgestimmte Akustik für professionelle Vocal-Tracks, die sich nahtlos in jeden Mix einfügen.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="philosophie" class="section-padding">
+            <div class="section-head">
+                <span>Identität & Philosophie</span>
+                <h3>Fokus auf Qualität und Ergebnis</h3>
+            </div>
+
+            <div class="story-container">
+                <div class="story-text-box">
+                    <p>ZZZ Studios ist kein anonymer Großbetrieb, sondern ein fokussierter Workspace für Musiker, Rapper und Content Creator. Wir legen Wert auf eine entspannte, konzentrierte Atmosphäre auf Augenhöhe, in der kreative Energie und technisches Handwerk Hand in Hand gehen.</p>
+                    <p>Mit jahrelanger Praxiserfahrung und fundiertem Know-how im Bereich Recording und Sounddesign begleiten wir deine Produktion von der ersten Rohspur bis zum finalen Song. Genre-unabhängig, transparent und unabhängig.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="kontakt" class="section-padding">
+            <div class="contact-box">
+                <div class="contact-info">
+                    <h3>Bereit für deine Session?</h3>
+                    <p>Schreib uns eine Nachricht oder reserviere deinen Termin direkt in Mülheim.</p>
+                    
+                    <ul class="contact-details-list" style="margin-top: 20px;">
+                        <li style="margin-bottom: 12px; font-weight: 700; color: var(--accent-bright);">Direktkontakt:</li>
+                        <li><strong>Standort:</strong> Köln-Mülheim</li>
+                        <li><strong>E-Mail:</strong> <a href="mailto:info@zzzstudios.de">info@zzzstudios.de</a></li>
+                        <li>
+                            <strong>Tel:</strong> 
+                            <a href="https://wa.me/4917666815058" target="_blank" class="wa-link">
+                                <svg class="wa-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                                +49 176 66815058
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <form class="form-grid" id="bookingForm">
+                    <div class="form-group">
+                        <label for="name">Dein Name / Künstlername</label>
+                        <input type="text" id="name" required placeholder="z. B. Alex">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Deine E-Mail</label>
+                        <input type="email" id="email" required placeholder="name@beispiel.de">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service">Gewünschter Service</label>
+                        <select id="service" required>
+                            <option value="recording">Recording Session</option>
+                            <option value="mixing">Mixing & Mastering</option>
+                            <option value="coaching">Workshop & Coaching</option>
+                            <option value="creator">Creator Pass Anfrage</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Deine Nachricht</label>
+                        <textarea id="message" required placeholder="Erzähl uns kurz von deinem Projekt..."></textarea>
+                    </div>
+
+                    <button type="submit">Anfrage absenden</button>
+                </form>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="container footer-flex">
+            <p><strong>ZZZ Studios</strong> • Köln-Mülheim</p>
+            <p>
+                <a href="mailto:info@zzzstudios.de">info@zzzstudios.de</a> | 
+                <a href="https://wa.me/4917666815058" target="_blank" class="wa-link">
+                    <svg class="wa-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    +49 176 66815058
+                </a>
+            </div>
+        </footer>
+
+    <div class="toast" id="toast">Vielen Dank! Deine Anfrage wurde erfolgreich gesendet.</div>
+
+    <script>
+        // 1. Fullscreen Overlay Burger Menü Logik
+        const burgerToggle = document.getElementById('burgerToggle');
+        const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+        const overlayLinks = document.querySelectorAll('.overlay-link');
+
+        burgerToggle.addEventListener('click', () => {
+            burgerToggle.classList.toggle('active');
+            fullscreenOverlay.classList.toggle('open');
+            document.body.style.overflow = fullscreenOverlay.classList.contains('open') ? 'hidden' : '';
+        });
+
+        overlayLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                burgerToggle.classList.remove('active');
+                fullscreenOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // 2. Interactive Canvas Ambient Orbs reacting smoothly to scroll & mouse
+        const canvas = document.getElementById('ambientCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        let mouse = { x: width / 2, y: height / 2, targetX: width / 2, targetY: height / 2 };
+        let currentScroll = window.scrollY;
+        let targetScroll = window.scrollY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.targetX = e.clientX;
+            mouse.targetY = e.clientY;
+        });
+
+        window.addEventListener('scroll', () => {
+            targetScroll = window.scrollY;
+        });
+
+        const orbs = [
+            { baseRatioX: 0.15, baseRatioY: 0.2, radius: 520, color: 'rgba(251, 191, 36, 0.16)', ease: 0.04, mouseMult: 0.05, scrollMult: 0.3 },
+            { baseRatioX: 0.82, baseRatioY: 0.6, radius: 580, color: 'rgba(217, 119, 6, 0.12)', ease: 0.03, mouseMult: -0.06, scrollMult: -0.22 },
+            { baseRatioX: 0.4, baseRatioY: 0.85, radius: 460, color: 'rgba(245, 158, 11, 0.10)', ease: 0.035, mouseMult: 0.04, scrollMult: 0.18 }
+        ];
+
+        orbs.forEach(orb => {
+            orb.x = width * orb.baseRatioX;
+            orb.y = height * orb.baseRatioY;
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            mouse.x += (mouse.targetX - mouse.x) * 0.06;
+            mouse.y += (mouse.targetY - mouse.y) * 0.06;
+            currentScroll += (targetScroll - currentScroll) * 0.08;
+
+            orbs.forEach(orb => {
+                const targetX = width * orb.baseRatioX + (mouse.x - width / 2) * orb.mouseMult;
+                const targetY = height * orb.baseRatioY + (mouse.y - height / 2) * orb.mouseMult + (currentScroll * orb.scrollMult);
+
+                orb.x += (targetX - orb.x) * orb.ease;
+                orb.y += (targetY - orb.y) * orb.ease;
+
+                const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.radius);
+                grad.addColorStop(0, orb.color);
+                grad.addColorStop(1, 'transparent');
+
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(orb.x, orb.y, orb.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // 3. Form Submission Toast Feedback
+        const bookingForm = document.getElementById('bookingForm');
+        const toast = document.getElementById('toast');
+
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            toast.style.display = 'block';
+            bookingForm.reset();
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 4500);
+        });
+    </script>
+</body>
+</html>
